@@ -1,0 +1,20 @@
+# Datos persistentes de Docker (No se suben)[cite: 5, 6]
+**/mosquitto/data/
+**/mosquitto/log/
+**/influxdb_data/
+**/node_red_data/
+**/mysql_data/
+
+# Credenciales y Configuración Local
+.env
+mosquitto/config/mosquitto.passwd
+
+# Python y HMI (Área 3)[cite: 8]
+__pycache__/
+*.py[cod]
+.venv/
+env/
+
+# Archivos de sistema y edición
+.vscode/
+.DS_Store
