@@ -1,2 +1,86 @@
-🐔 SGAI-IoT: Sistema de Gestión Avícola InteligenteArquitectura de 3 Capas basada en Ganadería de Precisión (PLF)Este repositorio contiene el ecosistema completo para el monitoreo individual de aves mediante RFID, orquestación en el borde con Docker y análisis masivo de datos. El sistema optimiza el bienestar animal y la rentabilidad mediante decisiones basadas estrictamente en datos telemétricos.  📂 Estructura del Repositorio y RolesCada carpeta representa un dominio de responsabilidad único:CarpetaÁreaResponsableTecnología Core/firmware1. CampoIng. de FirmwareESP32, C++, MQTT  /mosquitto2. Borde (Broker)Ing. de RedesDocker, Eclipse-Mosquitto  /node_red_data2. Borde (Flujos)Ing. de SoftwareNode-RED, InfluxDB  /hmi_area3. InterfazIng. de HMI/PythonPython, OpenCV, Tkinter  /database4. DatosIng. de DatosMariaDB, SQL, Grafana  /toolsSoporteTodo el equipoPython (Scripts de prueba)🏗️ Guía de Inicio para Desarrolladores1. Preparación del EntornoAntes de iniciar, cada integrante debe realizar lo siguiente en su máquina local:Instalar Docker Desktop y Git Bash.  Clonar este repositorio: git clone [<url_repo>](https://github.com/fcodanielcamp/Embebidos_Proyecto.git).Crear el archivo de credenciales: cp .env.example .env (y editar las claves).  2. Despliegue de ServiciosDesde la raíz del proyecto, ejecutar:Bashdocker-compose up -d
-Esto levantará el Broker MQTT, la base de datos MariaDB y el orquestador Node-RED automáticamente.  📑 Manual por Áreas de TrabajoÁrea 1: Arquitectura de Campo (/firmware)Misión: Leer 3 sensores RFID y ejecutar patrones PWM de iluminación.  Contrato de Salida: Publicar en granja/telemetria/rfid el JSON: {"id_sensor": X, "uid": "HEX"}.  Pines Críticos: GPIO 5 (Comida A), 17 (Comida B) y 16 (Salud).  Área 2: Orquestación de Borde (/mosquitto y /node_red_data)Misión: Ruteo de datos y persistencia en series temporales.  Configuración Obligatoria: Habilitar Swap de 2GB en la Raspberry Pi Zero 2W para evitar colapsos.  Trigger UDP: Al detectar id_sensor: 3, enviar paquete UDP al puerto 5005 de la HMI.  Área 3: Interfaz HMI y Control (/hmi_area)Misión: Visualización táctil y reporte de salud.  Calibración: Implementar Matriz de Homografía para el panel XPT2046 (240x320 px).  Threaded Listener: La escucha del puerto UDP 5005 debe correr en un hilo independiente para no bloquear la UI.  Área 4: Datos y Analítica (/database)Misión: Almacenamiento relacional y generación de Mapas de Calor.  Esquema: Tabla registros_gallinas con soporte para timestamps de 13 dígitos (BIGINT).  Acceso: Asegurar apertura del puerto 3306 en el firewall de la PC Central.  📡 Contrato de Comunicación Global (API Interna)Protocolo de Telemetría (MQTT)Broker: mosquitto_broker (Puerto 1883).  Tópicos:granja/telemetria/rfid: Datos de sensores.  granja/control/iluminacion: Comandos PWM (Patrones 1, 2 o 3).  Protocolo de Alerta (UDP)Puerto: 5005.  Función: Despertar el menú de salud durante 60 segundos tras detección de ave en módulo de diagnóstico.  Protocolo de Persistencia (SQL)Puerto: 3306.  Estados Permitidos: Saludable, Letárgica, Herida, Problema con alimento.  🛠️ Reglas de Convivencia en GitPull Diario: Ejecutar git pull antes de cada sesión de trabajo para sincronizar configuraciones de red.  Uso de .gitignore: Nunca forzar la subida de carpetas /data o archivos .passwd. La base de datos local es de uso personal para pruebas.  Commits Claros: Usar prefijos: feat: (nueva función), fix: (corrección), chore: (mantenimiento de carpetas).
+# 🐔 SGAI-IoT: Sistema de Gestión Avícola Inteligente
+**Arquitectura de 3 Capas basada en Ganadería de Precisión (PLF)**
+
+Este repositorio contiene el ecosistema completo para el monitoreo individual de aves mediante RFID, orquestación en el borde con Docker y análisis masivo de datos[cite: 1]. El sistema permite una gestión quirúrgica de la producción, optimizando el bienestar animal y la rentabilidad mediante decisiones basadas estrictamente en datos telemétricos[cite: 1].
+
+---
+
+## 📂 Estructura del Repositorio y Roles
+Cada carpeta representa un dominio de responsabilidad único para asegurar la autonomía del desarrollo[cite: 9]:
+
+| Carpeta | Área | Responsable | Tecnología Core |
+| :--- | :--- | :--- | :--- |
+| `/firmware` | **1. Campo** | Ing. de Firmware | ESP32, C++, MQTT[cite: 1] |
+| `/mosquitto` | **2. Borde (Broker)** | Ing. de Redes | Docker, Eclipse-Mosquitto[cite: 4] |
+| `/node_red_data` | **2. Borde (Flujos)** | Ing. de Software | Node-RED, InfluxDB[cite: 8] |
+| `/hmi_area` | **3. Interfaz** | Ing. de HMI/Python | Python, OpenCV, XPT2046[cite: 1] |
+| `/database` | **4. Datos** | Ing. de Datos | MariaDB, SQL, Grafana[cite: 7] |
+| `/tools` | **Soporte** | Todo el equipo | Python (Scripts de prueba) |
+
+---
+
+## 🏗️ Guía de Inicio para Desarrolladores
+
+### 1. Preparación del Entorno
+Antes de iniciar, cada integrante debe realizar lo siguiente en su máquina local:
+1. Instalar **Docker Desktop** y **Git Bash**[cite: 2].
+2. Clonar este repositorio: `git clone <url_repo>`.
+3. Crear el archivo de credenciales: `cp .env.example .env` (y editar las claves según corresponda)[cite: 6].
+
+### 2. Despliegue de Servicios
+Desde la raíz del proyecto en Git Bash, ejecutar:
+`docker-compose up -d`
+
+Esto levantará el Broker MQTT, la base de datos MariaDB y el orquestador Node-RED de forma automática[cite: 2, 4, 8].
+
+---
+
+## 📑 Manual por Áreas de Trabajo
+
+### Área 1: Arquitectura de Campo (`/firmware`)
+*   **Misión**: Adquisición física de identidades (RFID) y ejecución de señales PWM para actuadores[cite: 1].
+*   **Contrato de Salida**: Publicar en `granja/telemetria/rfid` el JSON: `{"id_sensor": X, "uid": "HEX", "timestamp": BIGINT}`[cite: 1].
+*   **Pines Críticos**: GPIO 5 (Zona Comida A), 17 (Zona Comida B) y 16 (Módulo de Salud)[cite: 1].
+
+### Área 2: Orquestación de Borde (`/mosquitto` y `/node_red_data`)
+*   **Misión**: Ruteo local de datos, gestión de HMI y persistencia de series temporales[cite: 1].
+*   **Configuración Obligatoria**: Configurar un **Archivo Swap de 2GB** en la Raspberry Pi Zero 2W para evitar el colapso del stack de microservicios[cite: 1].
+*   **Trigger UDP**: Al recibir un JSON con `{"id_sensor": 3}`, Node-RED debe inyectar un datagrama UDP al puerto `5005`[cite: 1].
+
+### Área 3: Interfaz HMI y Control (`/hmi_area`)
+*   **Misión**: Desarrollo de interfaz táctil para reportes de salud y comandos de flujo inverso[cite: 1, 9].
+*   **Precisión Táctil**: Implementar una **Matriz de Homografía** (`cv2.findHomography`) para mapear coordenadas resistivas a la resolución de 240x320 píxeles[cite: 1].
+*   **Threaded Listener**: La escucha del socket UDP (Puerto 5005) debe ser no-bloqueante respecto a la renderización gráfica[cite: 1].
+
+### Área 4: Datos y Analítica (`/database`)
+*   **Misión**: Persistencia masiva y analítica avanzada mediante mapas de calor (Heatmaps)[cite: 1].
+*   **Esquema**: Tabla `registros_gallinas` diseñada para soportar timestamps de alta precisión (13 dígitos)[cite: 1].
+*   **Acceso**: Configurar el firewall para permitir tráfico en el puerto `3306` (MariaDB)[cite: 7].
+
+---
+
+## 📡 Contrato de Comunicación Global (API Interna)
+
+### Protocolo de Telemetría (MQTT)
+*   **Broker**: `mosquitto_broker` (Puerto 1883)[cite: 4].
+*   **Tópicos Críticos**:
+    *   `granja/telemetria/rfid`: Datos provenientes de la ESP32[cite: 1].
+    *   `granja/control/iluminacion`: Comandos inversos desde la HMI (Patrones 1: Verde, 2: Amarillo, 3: Rojo)[cite: 1].
+
+### Protocolo de Alerta (UDP)
+*   **Puerto Mandatorio**: `5005`[cite: 1].
+*   **Lógica**: Activa automáticamente el menú de salud por una ventana de 60 segundos tras la detección en el Módulo de Salud[cite: 1].
+
+### Protocolo de Persistencia (SQL)
+*   **Puerto**: `3306`[cite: 7].
+*   **Reportes de Salud**: Los estados permitidos para inserción son `Saludable`, `Letárgica`, `Herida` y `Problema con alimento`[cite: 1].
+
+---
+
+## 🛠️ Reglas de Colaboración en Git
+1. **Pull Diario**: Ejecutar `git pull` antes de cada sesión para asegurar la sincronía de los contenedores[cite: 9].
+2. **Uso de `.gitignore`**: Queda estrictamente prohibido subir carpetas de datos locales (`/data`, `/mysql_data`) o archivos de contraseñas[cite: 4, 8].
+3. **Commits Semánticos**: Usar `feat:` para nuevas funciones, `fix:` para correcciones y `docs:` para documentación[cite: 2].
+
+---
+*Este proyecto es parte de la materia de Sistemas Embebidos 2025-2. Profesor: Eduardo Fragoso Navarro.*[cite: 9]
