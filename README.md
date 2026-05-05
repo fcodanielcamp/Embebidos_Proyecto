@@ -25,13 +25,19 @@ Cada carpeta representa un dominio de responsabilidad único para asegurar la au
 Antes de iniciar, cada integrante debe realizar lo siguiente en su máquina local:
 1. Instalar **Docker Desktop** y **Git Bash**.
 2. Clonar este repositorio: `git clone <url_repo>`.
-3. Crear el archivo de credenciales: `cp .env.example .env` (y editar las claves según corresponda).
+3. **Configurar Credenciales**: 
+   * Copiar la plantilla: `cp .env.example .env`.
+   * **IMPORTANTE**: Crear un archivo vacío en `mosquitto/config/mosquitto.passwd`. Esto es necesario para que el contenedor de Mosquitto inicie correctamente en Windows debido a políticas de seguridad.
 
 ### 2. Despliegue de Servicios
 Desde la raíz del proyecto en Git Bash, ejecutar:
 `docker-compose up -d`
 
-Esto levantará el Broker MQTT, la base de datos MariaDB y el orquestador Node-RED de forma automática.
+Esto levantará el Broker MQTT, la base de datos MariaDB y el orquestador Node-RED. Si Mosquitto muestra el error "Restarting", verifica que el archivo `.passwd` exista en la ruta mencionada.
+
+### 3. Registro de Usuario MQTT (Solo la primera vez)
+Para que el sistema acepte conexiones, el responsable de orquestación o el usuario local debe ejecutar:
+`docker exec -it mosquitto_broker mosquitto_passwd -b /mosquitto/config/mosquitto.passwd admin_avicola gallina_inteligente_2025`
 
 ---
 
