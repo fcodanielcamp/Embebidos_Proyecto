@@ -1,0 +1,359 @@
+[
+    {
+        "id": "738ecc0fd85310c9",
+        "type": "tab",
+        "label": "Flujo 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "cb84c4cc0e283524",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "mqtt_broker",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "ee8cf3e076d4ce28",
+        "type": "MySQLdatabase",
+        "name": "",
+        "host": "${DB_HOST}",
+        "port": "3306",
+        "db": "sistema_avicola",
+        "tz": "",
+        "charset": "UTF8"
+    },
+    {
+        "id": "150089a35346cce4",
+        "type": "mqtt in",
+        "z": "738ecc0fd85310c9",
+        "name": "",
+        "topic": "granja/telemetria/rfid",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "cb84c4cc0e283524",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 510,
+        "y": 260,
+        "wires": [
+            [
+                "987e55361428ae36"
+            ]
+        ]
+    },
+    {
+        "id": "987e55361428ae36",
+        "type": "switch",
+        "z": "738ecc0fd85310c9",
+        "name": "",
+        "property": "payload.id_sensor",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "1",
+                "vt": "num"
+            },
+            {
+                "t": "eq",
+                "v": "2",
+                "vt": "num"
+            },
+            {
+                "t": "eq",
+                "v": "3",
+                "vt": "num"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 4,
+        "x": 750,
+        "y": 260,
+        "wires": [
+            [
+                "90bbc7f6aa8801ab"
+            ],
+            [
+                "bee8ed461783f0a7"
+            ],
+            [
+                "52fdb3a61e9bd6ca"
+            ],
+            [
+                "4fd145e7d9a9cf53"
+            ]
+        ]
+    },
+    {
+        "id": "52fdb3a61e9bd6ca",
+        "type": "change",
+        "z": "738ecc0fd85310c9",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{   \"trigger\": \"active health menu\",   \"uid\": payload.uid }",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1080,
+        "y": 280,
+        "wires": [
+            [
+                "2cb96b1f474ee4ea",
+                "476a9d67037c07cc"
+            ]
+        ]
+    },
+    {
+        "id": "476a9d67037c07cc",
+        "type": "udp out",
+        "z": "738ecc0fd85310c9",
+        "name": "",
+        "addr": "host.docker.internal",
+        "iface": "",
+        "port": "5005",
+        "ipv": "udp4",
+        "outport": "",
+        "base64": false,
+        "multicast": "false",
+        "x": 1370,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "2cb96b1f474ee4ea",
+        "type": "debug",
+        "z": "738ecc0fd85310c9",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1300,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "ff0ba3707986fee8",
+        "type": "inject",
+        "z": "738ecc0fd85310c9",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"id_sensor\":1,\"uid\":\"778899AA\",\"timestamp\":1714950060000}",
+        "payloadType": "json",
+        "x": 510,
+        "y": 200,
+        "wires": [
+            [
+                "987e55361428ae36"
+            ]
+        ]
+    },
+    {
+        "id": "033975c8f5ac9462",
+        "type": "mqtt in",
+        "z": "738ecc0fd85310c9",
+        "name": "",
+        "topic": "granja/hmi/registro",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "cb84c4cc0e283524",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 510,
+        "y": 460,
+        "wires": [
+            [
+                "c5870c7259040399"
+            ]
+        ]
+    },
+    {
+        "id": "c5870c7259040399",
+        "type": "template",
+        "z": "738ecc0fd85310c9",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "INSERT INTO historial_salud (uid, estado, fecha) \nVALUES ('{{payload.uid}}', '{{payload.estado}}', '{{payload.timestamp}}');",
+        "output": "str",
+        "x": 700,
+        "y": 460,
+        "wires": [
+            [
+                "a05f93db4e6ecf75",
+                "7da16094a90578c7"
+            ]
+        ]
+    },
+    {
+        "id": "7da16094a90578c7",
+        "type": "mysql",
+        "z": "738ecc0fd85310c9",
+        "mydb": "ee8cf3e076d4ce28",
+        "name": "",
+        "x": 960,
+        "y": 460,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a05f93db4e6ecf75",
+        "type": "debug",
+        "z": "738ecc0fd85310c9",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 940,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "0a59ec8714a9c6c6",
+        "type": "inject",
+        "z": "738ecc0fd85310c9",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "granja/hmi/registro",
+        "payload": "{\"uid\":\"A1B2C3D4\",\"estado\":\"Saludable\",\"timestamp\":1714950000000}",
+        "payloadType": "json",
+        "x": 490,
+        "y": 400,
+        "wires": [
+            [
+                "c5870c7259040399"
+            ]
+        ]
+    },
+    {
+        "id": "90bbc7f6aa8801ab",
+        "type": "mqtt out",
+        "z": "738ecc0fd85310c9",
+        "name": "",
+        "topic": "granja/telemetria/comedorA",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "cb84c4cc0e283524",
+        "x": 1100,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "bee8ed461783f0a7",
+        "type": "mqtt out",
+        "z": "738ecc0fd85310c9",
+        "name": "",
+        "topic": "granja/telemetria/comedorB",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "cb84c4cc0e283524",
+        "x": 1120,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "4fd145e7d9a9cf53",
+        "type": "debug",
+        "z": "738ecc0fd85310c9",
+        "name": "ID no Reconocido",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 990,
+        "y": 340,
+        "wires": []
+    }
+]

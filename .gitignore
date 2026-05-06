@@ -1,31 +1,20 @@
 # =================================================
-# DATOS PERSISTENTES DE DOCKER (No se suben)
+# DATOS PERSISTENTES DE DOCKER
 # =================================================
 **/mosquitto/data/
 **/mosquitto/log/
-**/node_red_data/
 **/mysql_data/
 **/mysql_data_area4/
 **/influxdb_data/
+
+# --- Ajuste para Node-RED ---
+**/node_red_data/*
+!**/node_red_data/flows.json
+!**/node_red_data/settings.js
 
 # =================================================
 # CREDENCIALES Y CONFIGURACIÓN LOCAL
 # =================================================
 .env
-.env.example
+# .env.example  <-- ELIMINA O COMENTA ESTA LÍNEA para que sí se suba
 **/mosquitto/config/mosquitto.passwd
-
-# =================================================
-# PYTHON Y HMI (ÁREA 3)
-# =================================================
-**/__pycache__/
-**/*.py[cod]
-**/.venv/
-**/env/
-
-# =================================================
-# ARCHIVOS DE SISTEMA Y EDICIÓN
-# =================================================
-.vscode/
-.DS_Store
-Thumbs.db
