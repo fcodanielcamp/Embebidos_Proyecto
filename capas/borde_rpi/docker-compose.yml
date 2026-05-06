@@ -1,21 +1,15 @@
-version: '3.8'
-
 services:
-  # ÁREA 2: BROKER MQTT
   mqtt_broker:
     image: eclipse-mosquitto:latest
     container_name: mosquitto_broker
     ports:
       - "1883:1883"
-      - "9001:9001"
     volumes:
       - ./mosquitto/config/mosquitto.conf:/mosquitto/config/mosquitto.conf
       - ./mosquitto/config/mosquitto.passwd:/mosquitto/config/mosquitto.passwd:ro
       - ./mosquitto/data:/mosquitto/data
-      - ./mosquitto/log:/mosquitto/log
     restart: always
 
-  # ÁREA 2: ORQUESTADOR NODE-RED[cite: 1, 8]
   nodered:
     image: nodered/node-red:latest
     container_name: node_red_orquestador
@@ -27,25 +21,12 @@ services:
       - ./node_red_data:/data
     restart: always
 
-  # ÁREA 3: INTERFAZ HMI (PYTHON)[cite: 1, 2]
   hmi_python:
     build: ./hmi_area
     container_name: hmi_interface
-    privileged: true
-    network_mode: host # Recomendado para UDP y acceso a hardware directo[cite: 1]
+    network_mode: host
     volumes:
       - ./hmi_area:/app
     depends_on:
       - mqtt_broker
-    restart: always
-
-  # ÁREA 4: BASE DE DATOS (MARIADB)
-  mariadb:
-    image: mariadb:latest
-    container_name: mariadb_datos
-    env_file: .env
-    ports:
-      - "3306:3306"
-    volumes:
-      - ./mysql_data:/var/lib/mysql
     restart: always

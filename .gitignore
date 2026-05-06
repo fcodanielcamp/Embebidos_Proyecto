@@ -1,23 +1,31 @@
-# Datos persistentes de Docker (No se suben)
+# =================================================
+# DATOS PERSISTENTES DE DOCKER (No se suben)
+# =================================================
 **/mosquitto/data/
 **/mosquitto/log/
-**/influxdb_data/
 **/node_red_data/
 **/mysql_data/
 **/mysql_data_area4/
+**/influxdb_data/
 
-# Credenciales y Configuración Local
+# =================================================
+# CREDENCIALES Y CONFIGURACIÓN LOCAL
+# =================================================
 .env
 .env.example
-mosquitto/config/mosquitto.passwd
+**/mosquitto/config/mosquitto.passwd
 
-# Python y HMI (Área 3)
-__pycache__/
-*.py[cod]
-.venv/
-env/
+# =================================================
+# PYTHON Y HMI (ÁREA 3)
+# =================================================
+**/__pycache__/
+**/*.py[cod]
+**/.venv/
+**/env/
 
-# Archivos de sistema y edición
+# =================================================
+# ARCHIVOS DE SISTEMA Y EDICIÓN
+# =================================================
 .vscode/
 .DS_Store
 Thumbs.db
