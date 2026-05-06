@@ -13,6 +13,7 @@ services:
   nodered:
     image: nodered/node-red:latest
     container_name: node_red_orquestador
+    user: "root" # Necesario para tener permisos de instalación de npm
     depends_on:
       - mqtt_broker
     ports:
@@ -20,6 +21,9 @@ services:
     volumes:
       - ./node_red_data:/data
     restart: always
+    command: >
+      bash -c "npm install node-red-contrib-re-postgres && 
+      node-red-pi --userDir /data"
 
   hmi_python:
     build: ./hmi_area
