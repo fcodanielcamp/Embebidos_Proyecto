@@ -148,7 +148,7 @@
         "id": "476a9d67037c07cc",
         "type": "udp out",
         "z": "738ecc0fd85310c9",
-        "name": "",
+        "name": "Activar HMI",
         "addr": "host.docker.internal",
         "iface": "",
         "port": "5005",
@@ -156,7 +156,7 @@
         "outport": "",
         "base64": false,
         "multicast": "false",
-        "x": 1370,
+        "x": 1310,
         "y": 280,
         "wires": []
     },
@@ -169,7 +169,8 @@
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "false",
+        "complete": "payload",
+        "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
         "x": 1300,
@@ -354,6 +355,167 @@
         "statusType": "auto",
         "x": 990,
         "y": 340,
+        "wires": []
+    },
+    {
+        "id": "b1d7ba14e297870e",
+        "type": "udp in",
+        "z": "738ecc0fd85310c9",
+        "name": "Entradas Botones Físicos",
+        "iface": "",
+        "port": "5006",
+        "ipv": "udp4",
+        "multicast": "false",
+        "group": "",
+        "datatype": "utf8",
+        "x": 550,
+        "y": 640,
+        "wires": [
+            [
+                "01a16cedcb94cc84"
+            ]
+        ]
+    },
+    {
+        "id": "03b01911563d3cc1",
+        "type": "inject",
+        "z": "738ecc0fd85310c9",
+        "name": "Modo Postura",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "1",
+        "payloadType": "num",
+        "x": 590,
+        "y": 680,
+        "wires": [
+            [
+                "01a16cedcb94cc84"
+            ]
+        ]
+    },
+    {
+        "id": "b618a5ba69d63e8c",
+        "type": "inject",
+        "z": "738ecc0fd85310c9",
+        "name": "Modo Descanso",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "2",
+        "payloadType": "num",
+        "x": 580,
+        "y": 720,
+        "wires": [
+            [
+                "01a16cedcb94cc84"
+            ]
+        ]
+    },
+    {
+        "id": "3d4bfef55c31f77f",
+        "type": "inject",
+        "z": "738ecc0fd85310c9",
+        "name": "Modo Mantenimiento",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "3",
+        "payloadType": "num",
+        "x": 560,
+        "y": 760,
+        "wires": [
+            [
+                "01a16cedcb94cc84"
+            ]
+        ]
+    },
+    {
+        "id": "01a16cedcb94cc84",
+        "type": "function",
+        "z": "738ecc0fd85310c9",
+        "name": "Validador",
+        "func": "// Convertimos el mensaje entrante a número\nlet seleccion = parseInt(msg.payload);\n\n// Validamos que sea un patrón permitido (1, 2 o 3)\nif (seleccion >= 1 && seleccion <= 3) {\n    msg.payload = { \"patron\": seleccion };\n    return msg;\n}\n// Si no es válido, descartamos el mensaje\nreturn null;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 780,
+        "y": 700,
+        "wires": [
+            [
+                "a305fc22421682bf",
+                "bc02d8e7972b483f"
+            ]
+        ]
+    },
+    {
+        "id": "a305fc22421682bf",
+        "type": "mqtt out",
+        "z": "738ecc0fd85310c9",
+        "name": "",
+        "topic": "granja/control/iluminacion",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "cb84c4cc0e283524",
+        "x": 1030,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "bc02d8e7972b483f",
+        "type": "debug",
+        "z": "738ecc0fd85310c9",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 980,
+        "y": 760,
         "wires": []
     }
 ]

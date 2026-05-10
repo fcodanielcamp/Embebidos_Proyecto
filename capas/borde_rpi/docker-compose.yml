@@ -26,6 +26,8 @@ services:
       - "bash"
       - "-c"
       - "npm install node-red-node-mysql && ./node_modules/.bin/node-red --userDir /data"
+    env_file:
+      - ../../.env  # Debe subir dos niveles para buscar el archivo
 
   hmi_python:
     build: ./hmi_area
