@@ -2,39 +2,48 @@ services:
   mqtt_broker:
     image: eclipse-mosquitto:latest
     container_name: mosquitto_broker
+    restart: always
     ports:
       - "1883:1883"
     volumes:
       - ./mosquitto/config/mosquitto.conf:/mosquitto/config/mosquitto.conf
       - ./mosquitto/config/mosquitto.passwd:/mosquitto/config/mosquitto.passwd:ro
       - ./mosquitto/data:/mosquitto/data
+
+  influxdb:
+    image: influxdb:2.7
+    container_name: influxdb_telemetria
     restart: always
+    ports:
+      - "8086:8086"
+    env_file:
+      - ../../.env
+    volumes:
+      - ./influxdb_data:/var/lib/influxdb2
 
   nodered:
     image: nodered/node-red:latest
     container_name: node_red_orquestador
+    restart: always
     user: "root"
     depends_on:
       - mqtt_broker
+      - influxdb
     ports:
       - "1880:1880"
+    env_file:
+      - ../../.env
     volumes:
       - ./node_red_data:/data
-    restart: always
-    # Sustituimos 'command' por 'entrypoint' para forzar la ejecución
-    entrypoint: 
-      - "bash"
-      - "-c"
-      - "npm install node-red-node-mysql && ./node_modules/.bin/node-red --userDir /data"
-    env_file:
-      - ../../.env  # Debe subir dos niveles para buscar el archivo
+    # Nota: Se recomienda instalar 'node-red-node-mysql' y 'node-red-contrib-influxdb' 
+    # manualmente una vez vía interfaz web para evitar picos de RAM en el arranque.
 
   hmi_python:
     build: ./hmi_area
     container_name: hmi_interface
+    restart: always
     network_mode: host
     volumes:
       - ./hmi_area:/app
     depends_on:
       - mqtt_broker
-    restart: always

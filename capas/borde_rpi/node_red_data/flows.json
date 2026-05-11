@@ -49,6 +49,21 @@
         "charset": "UTF8"
     },
     {
+        "id": "f132b14b880fb640",
+        "type": "influxdb",
+        "hostname": "127.0.0.1",
+        "port": 8086,
+        "protocol": "http",
+        "database": "database",
+        "name": "",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "2.0",
+        "url": "http://influxdb_telemetria:8086",
+        "timeout": 10,
+        "rejectUnauthorized": true
+    },
+    {
         "id": "150089a35346cce4",
         "type": "mqtt in",
         "z": "738ecc0fd85310c9",
@@ -61,8 +76,8 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 510,
-        "y": 260,
+        "x": 530,
+        "y": 160,
         "wires": [
             [
                 "987e55361428ae36"
@@ -99,8 +114,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 4,
-        "x": 750,
-        "y": 260,
+        "x": 770,
+        "y": 160,
         "wires": [
             [
                 "90bbc7f6aa8801ab"
@@ -135,8 +150,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1080,
-        "y": 280,
+        "x": 1100,
+        "y": 180,
         "wires": [
             [
                 "2cb96b1f474ee4ea",
@@ -156,8 +171,8 @@
         "outport": "",
         "base64": false,
         "multicast": "false",
-        "x": 1310,
-        "y": 280,
+        "x": 1330,
+        "y": 180,
         "wires": []
     },
     {
@@ -173,8 +188,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1300,
-        "y": 320,
+        "x": 1320,
+        "y": 220,
         "wires": []
     },
     {
@@ -183,9 +198,6 @@
         "z": "738ecc0fd85310c9",
         "name": "",
         "props": [
-            {
-                "p": "payload"
-            },
             {
                 "p": "payload"
             }
@@ -197,8 +209,8 @@
         "topic": "",
         "payload": "{\"id_sensor\":1,\"uid\":\"778899AA\",\"timestamp\":1714950060000}",
         "payloadType": "json",
-        "x": 510,
-        "y": 200,
+        "x": 530,
+        "y": 100,
         "wires": [
             [
                 "987e55361428ae36"
@@ -218,8 +230,8 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 510,
-        "y": 460,
+        "x": 790,
+        "y": 540,
         "wires": [
             [
                 "c5870c7259040399"
@@ -237,43 +249,13 @@
         "syntax": "mustache",
         "template": "INSERT INTO historial_salud (uid, estado, fecha) \nVALUES ('{{payload.uid}}', '{{payload.estado}}', '{{payload.timestamp}}');",
         "output": "str",
-        "x": 700,
-        "y": 460,
+        "x": 980,
+        "y": 540,
         "wires": [
             [
-                "a05f93db4e6ecf75",
                 "7da16094a90578c7"
             ]
         ]
-    },
-    {
-        "id": "7da16094a90578c7",
-        "type": "mysql",
-        "z": "738ecc0fd85310c9",
-        "mydb": "ee8cf3e076d4ce28",
-        "name": "",
-        "x": 960,
-        "y": 460,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "a05f93db4e6ecf75",
-        "type": "debug",
-        "z": "738ecc0fd85310c9",
-        "name": "debug 2",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 940,
-        "y": 520,
-        "wires": []
     },
     {
         "id": "0a59ec8714a9c6c6",
@@ -296,8 +278,8 @@
         "topic": "granja/hmi/registro",
         "payload": "{\"uid\":\"A1B2C3D4\",\"estado\":\"Saludable\",\"timestamp\":1714950000000}",
         "payloadType": "json",
-        "x": 490,
-        "y": 400,
+        "x": 770,
+        "y": 480,
         "wires": [
             [
                 "c5870c7259040399"
@@ -318,8 +300,8 @@
         "correl": "",
         "expiry": "",
         "broker": "cb84c4cc0e283524",
-        "x": 1100,
-        "y": 140,
+        "x": 1120,
+        "y": 40,
         "wires": []
     },
     {
@@ -336,8 +318,8 @@
         "correl": "",
         "expiry": "",
         "broker": "cb84c4cc0e283524",
-        "x": 1120,
-        "y": 200,
+        "x": 1140,
+        "y": 100,
         "wires": []
     },
     {
@@ -353,8 +335,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 990,
-        "y": 340,
+        "x": 1010,
+        "y": 240,
         "wires": []
     },
     {
@@ -368,8 +350,8 @@
         "multicast": "false",
         "group": "",
         "datatype": "utf8",
-        "x": 550,
-        "y": 640,
+        "x": 510,
+        "y": 560,
         "wires": [
             [
                 "01a16cedcb94cc84"
@@ -397,8 +379,8 @@
         "topic": "",
         "payload": "1",
         "payloadType": "num",
-        "x": 590,
-        "y": 680,
+        "x": 550,
+        "y": 600,
         "wires": [
             [
                 "01a16cedcb94cc84"
@@ -426,8 +408,8 @@
         "topic": "",
         "payload": "2",
         "payloadType": "num",
-        "x": 580,
-        "y": 720,
+        "x": 540,
+        "y": 640,
         "wires": [
             [
                 "01a16cedcb94cc84"
@@ -455,8 +437,8 @@
         "topic": "",
         "payload": "3",
         "payloadType": "num",
-        "x": 560,
-        "y": 760,
+        "x": 520,
+        "y": 680,
         "wires": [
             [
                 "01a16cedcb94cc84"
@@ -475,8 +457,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 780,
-        "y": 700,
+        "x": 740,
+        "y": 620,
         "wires": [
             [
                 "a305fc22421682bf",
@@ -498,8 +480,8 @@
         "correl": "",
         "expiry": "",
         "broker": "cb84c4cc0e283524",
-        "x": 1030,
-        "y": 700,
+        "x": 990,
+        "y": 620,
         "wires": []
     },
     {
@@ -514,8 +496,133 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 980,
-        "y": 760,
+        "x": 940,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "7da16094a90578c7",
+        "type": "mysql",
+        "z": "738ecc0fd85310c9",
+        "mydb": "ee8cf3e076d4ce28",
+        "name": "",
+        "x": 1240,
+        "y": 540,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "461c90510df8e65b",
+        "type": "mqtt in",
+        "z": "738ecc0fd85310c9",
+        "name": "",
+        "topic": "granja/telemetria/comedorA",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "cb84c4cc0e283524",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 520,
+        "y": 340,
+        "wires": [
+            [
+                "fc1727d073b6e4a9"
+            ]
+        ]
+    },
+    {
+        "id": "111384a90924426f",
+        "type": "mqtt in",
+        "z": "738ecc0fd85310c9",
+        "name": "",
+        "topic": "granja/telemetria/comedorB",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "cb84c4cc0e283524",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 520,
+        "y": 380,
+        "wires": [
+            [
+                "fc1727d073b6e4a9"
+            ]
+        ]
+    },
+    {
+        "id": "fc1727d073b6e4a9",
+        "type": "json",
+        "z": "738ecc0fd85310c9",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 750,
+        "y": 360,
+        "wires": [
+            [
+                "d0d927ca3d92e94b"
+            ]
+        ]
+    },
+    {
+        "id": "d0d927ca3d92e94b",
+        "type": "function",
+        "z": "738ecc0fd85310c9",
+        "name": "function 1",
+        "func": "// El timestamp viene en milisegundos, InfluxDB lo acepta bien así\nmsg.payload = [\n    {\n        // Campos (Valores numéricos o datos que quieres medir)\n        id_sensor: msg.payload.id_sensor,\n        uid: msg.payload.uid\n    }\n];\n\n// Asignamos el timestamp original del mensaje para que Influx use ese y no el actual\nmsg.timestamp = msg.payload.timestamp;\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 920,
+        "y": 360,
+        "wires": [
+            [
+                "923e8010c44d5211",
+                "e933f1797b45c2a6"
+            ]
+        ]
+    },
+    {
+        "id": "923e8010c44d5211",
+        "type": "influxdb out",
+        "z": "738ecc0fd85310c9",
+        "influxdb": "f132b14b880fb640",
+        "name": "",
+        "measurement": "intento_tres",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "granja_iot",
+        "bucket": "sensor_data",
+        "x": 1220,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "e933f1797b45c2a6",
+        "type": "debug",
+        "z": "738ecc0fd85310c9",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1140,
+        "y": 440,
         "wires": []
     }
 ]
