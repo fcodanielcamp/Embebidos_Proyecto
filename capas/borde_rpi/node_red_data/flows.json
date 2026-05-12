@@ -200,6 +200,9 @@
         "props": [
             {
                 "p": "payload"
+            },
+            {
+                "p": "payload"
             }
         ],
         "repeat": "",
@@ -207,8 +210,8 @@
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "payload": "{\"id_sensor\":1,\"uid\":\"778899AA\",\"timestamp\":1714950060000}",
-        "payloadType": "json",
+        "payload": "{\"id_sensor\":3,\"uid\":\"778899AA\",\"timestamp\":1714950060000}",
+        "payloadType": "str",
         "x": 530,
         "y": 100,
         "wires": [
@@ -501,18 +504,6 @@
         "wires": []
     },
     {
-        "id": "7da16094a90578c7",
-        "type": "mysql",
-        "z": "738ecc0fd85310c9",
-        "mydb": "ee8cf3e076d4ce28",
-        "name": "",
-        "x": 1240,
-        "y": 540,
-        "wires": [
-            []
-        ]
-    },
-    {
         "id": "461c90510df8e65b",
         "type": "mqtt in",
         "z": "738ecc0fd85310c9",
@@ -592,6 +583,34 @@
         ]
     },
     {
+        "id": "e933f1797b45c2a6",
+        "type": "debug",
+        "z": "738ecc0fd85310c9",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1140,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "7da16094a90578c7",
+        "type": "mysql",
+        "z": "738ecc0fd85310c9",
+        "mydb": "ee8cf3e076d4ce28",
+        "name": "",
+        "x": 1240,
+        "y": 540,
+        "wires": [
+            []
+        ]
+    },
+    {
         "id": "923e8010c44d5211",
         "type": "influxdb out",
         "z": "738ecc0fd85310c9",
@@ -607,22 +626,6 @@
         "bucket": "sensor_data",
         "x": 1220,
         "y": 360,
-        "wires": []
-    },
-    {
-        "id": "e933f1797b45c2a6",
-        "type": "debug",
-        "z": "738ecc0fd85310c9",
-        "name": "debug 2",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1140,
-        "y": 440,
         "wires": []
     }
 ]
