@@ -39,16 +39,6 @@
         "sessionExpiry": ""
     },
     {
-        "id": "ee8cf3e076d4ce28",
-        "type": "MySQLdatabase",
-        "name": "",
-        "host": "${DB_HOST}",
-        "port": "3306",
-        "db": "sistema_avicola",
-        "tz": "",
-        "charset": "UTF8"
-    },
-    {
         "id": "f132b14b880fb640",
         "type": "influxdb",
         "hostname": "127.0.0.1",
@@ -62,6 +52,16 @@
         "url": "http://influxdb_telemetria:8086",
         "timeout": 10,
         "rejectUnauthorized": true
+    },
+    {
+        "id": "6cd9f2e383036370",
+        "type": "MySQLdatabase",
+        "name": "sistema_avicola",
+        "host": "192.168.253.114",
+        "port": "3306",
+        "db": "sistema_avicola",
+        "tz": "",
+        "charset": "UTF8"
     },
     {
         "id": "150089a35346cce4",
@@ -196,28 +196,23 @@
         "id": "ff0ba3707986fee8",
         "type": "inject",
         "z": "738ecc0fd85310c9",
-        "name": "",
+        "name": "inyectar_1-gallinaC",
         "props": [
-            {
-                "p": "payload"
-            },
             {
                 "p": "payload"
             }
         ],
-        "repeat": "",
+        "repeat": "3",
         "crontab": "",
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "payload": "{\"id_sensor\":3,\"uid\":\"778899AA\",\"timestamp\":1714950060000}",
-        "payloadType": "str",
-        "x": 530,
+        "payload": "{\t  \"id_sensor\": 1,\t  \"uid\": \"778899CC\",\t  \"timestamp\": $millis()\t}",
+        "payloadType": "jsonata",
+        "x": 580,
         "y": 100,
         "wires": [
-            [
-                "987e55361428ae36"
-            ]
+            []
         ]
     },
     {
@@ -237,26 +232,7 @@
         "y": 540,
         "wires": [
             [
-                "c5870c7259040399"
-            ]
-        ]
-    },
-    {
-        "id": "c5870c7259040399",
-        "type": "template",
-        "z": "738ecc0fd85310c9",
-        "name": "",
-        "field": "payload",
-        "fieldType": "msg",
-        "format": "handlebars",
-        "syntax": "mustache",
-        "template": "INSERT INTO historial_salud (uid, estado, fecha) \nVALUES ('{{payload.uid}}', '{{payload.estado}}', '{{payload.timestamp}}');",
-        "output": "str",
-        "x": 980,
-        "y": 540,
-        "wires": [
-            [
-                "7da16094a90578c7"
+                "2d9715b88aaf2054"
             ]
         ]
     },
@@ -268,24 +244,20 @@
         "props": [
             {
                 "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
             }
         ],
         "repeat": "",
         "crontab": "",
         "once": false,
         "onceDelay": 0.1,
-        "topic": "granja/hmi/registro",
+        "topic": "",
         "payload": "{\"uid\":\"A1B2C3D4\",\"estado\":\"Saludable\",\"timestamp\":1714950000000}",
         "payloadType": "json",
         "x": 770,
         "y": 480,
         "wires": [
             [
-                "c5870c7259040399"
+                "2d9715b88aaf2054"
             ]
         ]
     },
@@ -566,7 +538,7 @@
         "type": "function",
         "z": "738ecc0fd85310c9",
         "name": "function 1",
-        "func": "// El timestamp viene en milisegundos, InfluxDB lo acepta bien así\nmsg.payload = [\n    {\n        // Campos (Valores numéricos o datos que quieres medir)\n        id_sensor: msg.payload.id_sensor,\n        uid: msg.payload.uid\n    }\n];\n\n// Asignamos el timestamp original del mensaje para que Influx use ese y no el actual\nmsg.timestamp = msg.payload.timestamp;\n\nreturn msg;",
+        "func": "// 1. Extraemos los datos que vienen del ESP32 (o del Inyect de prueba)\nvar rfidData = msg.payload; \n\n// 2. Preparamos los campos de datos (Fields)\nmsg.payload = {\n    id_sensor: rfidData.id_sensor,\n    uid: rfidData.uid\n};\n\n// 3. MAPEO DEL TIEMPO ORIGINALE\n// Tomamos el timestamp que generó el ESP32 y lo pasamos a msg.timestamp.\n// El nodo InfluxDB Out usará este valor para la columna _time.\nmsg.timestamp = rfidData.timestamp; \n\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -602,9 +574,9 @@
         "id": "7da16094a90578c7",
         "type": "mysql",
         "z": "738ecc0fd85310c9",
-        "mydb": "ee8cf3e076d4ce28",
+        "mydb": "6cd9f2e383036370",
         "name": "",
-        "x": 1240,
+        "x": 1360,
         "y": 540,
         "wires": [
             []
@@ -627,5 +599,127 @@
         "x": 1220,
         "y": 360,
         "wires": []
+    },
+    {
+        "id": "45bf8649b59cdfec",
+        "type": "debug",
+        "z": "738ecc0fd85310c9",
+        "name": "debug 4",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1340,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "227119918fa1e32c",
+        "type": "debug",
+        "z": "738ecc0fd85310c9",
+        "name": "debug 5",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 880,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "a7c72e5651c68c6c",
+        "type": "inject",
+        "z": "738ecc0fd85310c9",
+        "name": "inyectar_1-gallinaA",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "3",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\t  \"id_sensor\": 1,\t  \"uid\": \"778899AA\",\t  \"timestamp\": $millis()\t}",
+        "payloadType": "jsonata",
+        "x": 320,
+        "y": 100,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7794d0400ff2303c",
+        "type": "inject",
+        "z": "738ecc0fd85310c9",
+        "name": "inyectar_2-gallinaC",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "5",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "5",
+        "topic": "",
+        "payload": "{\t  \"id_sensor\": 2,\t  \"uid\": \"778899CC\",\t  \"timestamp\": $millis()\t}",
+        "payloadType": "jsonata",
+        "x": 560,
+        "y": 240,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "8e3a9066d6e9a018",
+        "type": "inject",
+        "z": "738ecc0fd85310c9",
+        "name": "inyectar_2-gallinaA",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "7",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "5",
+        "topic": "",
+        "payload": "{\t  \"id_sensor\": 2,\t  \"uid\": \"778899AA\",\t  \"timestamp\": $millis()\t}",
+        "payloadType": "jsonata",
+        "x": 320,
+        "y": 240,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "2d9715b88aaf2054",
+        "type": "function",
+        "z": "738ecc0fd85310c9",
+        "name": "function 2",
+        "func": "// 1. Creamos la consulta SQL usando los datos que vienen del inyector\nlet sql = `INSERT INTO historial_salud (id_gallina, id_sensor, estado_salud, fecha_hora) \n           VALUES ('${msg.payload.uid}', '3', '${msg.payload.estado}', ${msg.payload.timestamp});`;\n\n// 2. REINICIO TOTAL DEL MENSAJE\n// Esto elimina msg.topic y cualquier otra propiedad oculta\nlet nuevoMsg = {\n    payload: String(sql) // Forzamos que sea una cadena de texto pura\n};\n\nreturn nuevoMsg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1060,
+        "y": 540,
+        "wires": [
+            [
+                "7da16094a90578c7",
+                "45bf8649b59cdfec"
+            ]
+        ]
     }
 ]
