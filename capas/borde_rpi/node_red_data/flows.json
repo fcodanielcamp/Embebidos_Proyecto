@@ -54,10 +54,10 @@
         "rejectUnauthorized": true
     },
     {
-        "id": "6cd9f2e383036370",
+        "id": "330c3f6f02b22669",
         "type": "MySQLdatabase",
         "name": "sistema_avicola",
-        "host": "192.168.253.114",
+        "host": "192.168.0.159",
         "port": "3306",
         "db": "sistema_avicola",
         "tz": "",
@@ -231,7 +231,9 @@
         "x": 790,
         "y": 540,
         "wires": [
-            []
+            [
+                "1c5b596d652a0796"
+            ]
         ]
     },
     {
@@ -570,7 +572,7 @@
         "id": "7da16094a90578c7",
         "type": "mysql",
         "z": "738ecc0fd85310c9",
-        "mydb": "6cd9f2e383036370",
+        "mydb": "330c3f6f02b22669",
         "name": "",
         "x": 1360,
         "y": 540,
@@ -718,6 +720,26 @@
         "y": 460,
         "wires": [
             []
+        ]
+    },
+    {
+        "id": "1c5b596d652a0796",
+        "type": "function",
+        "z": "738ecc0fd85310c9",
+        "name": "function 2",
+        "func": "// 1. Definimos la consulta con signos de interrogación como marcadores (placeholders)\nlet query = \"INSERT INTO historial_salud (id_gallina, id_sensor, estado_salud, fecha_hora) VALUES (?, ?, ?, ?);\";\n\n// 2. Creamos un array con los valores exactos en el orden de los marcadores\n// Usamos String() para asegurar que los textos sean cadenas y no objetos\nlet valores = [\n    String(msg.payload.uid),\n    \"3\",\n    String(msg.payload.estado),\n    msg.payload.timestamp\n];\n\n// 3. Reiniciamos el mensaje enviando la query y los parámetros por separado\n// Esta estructura es la que espera el nodo MySQL para consultas parametrizadas\nreturn {\n    topic: query,\n    payload: valores\n};",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1060,
+        "y": 540,
+        "wires": [
+            [
+                "7da16094a90578c7"
+            ]
         ]
     }
 ]
