@@ -231,9 +231,7 @@
         "x": 790,
         "y": 540,
         "wires": [
-            [
-                "2d9715b88aaf2054"
-            ]
+            []
         ]
     },
     {
@@ -256,9 +254,7 @@
         "x": 770,
         "y": 480,
         "wires": [
-            [
-                "2d9715b88aaf2054"
-            ]
+            []
         ]
     },
     {
@@ -702,24 +698,26 @@
         ]
     },
     {
-        "id": "2d9715b88aaf2054",
-        "type": "function",
+        "id": "b88f225da5ecce6f",
+        "type": "inject",
         "z": "738ecc0fd85310c9",
-        "name": "function 2",
-        "func": "// 1. Definimos la consulta con signos de interrogación como marcadores (placeholders)\nlet query = \"INSERT INTO historial_salud (id_gallina, id_sensor, estado_salud, fecha_hora) VALUES (?, ?, ?, ?);\";\n\n// 2. Creamos un array con los valores exactos en el orden de los marcadores\n// Usamos String() para asegurar que los textos sean cadenas y no objetos\nlet valores = [\n    String(msg.payload.uid),\n    \"3\",\n    String(msg.payload.estado),\n    msg.payload.timestamp\n];\n\n// 3. Reiniciamos el mensaje enviando la query y los parámetros por separado\n// Esta estructura es la que espera el nodo MySQL para consultas parametrizadas\nreturn {\n    topic: query,\n    payload: valores\n};",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1060,
-        "y": 540,
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"uid\":\"B1B2C3D4\",\"estado\":\"Saludable\",\"timestamp\":1714951000000}",
+        "payloadType": "json",
+        "x": 910,
+        "y": 460,
         "wires": [
-            [
-                "7da16094a90578c7",
-                "45bf8649b59cdfec"
-            ]
+            []
         ]
     }
 ]
