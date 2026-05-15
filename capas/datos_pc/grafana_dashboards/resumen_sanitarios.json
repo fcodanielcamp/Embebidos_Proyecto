@@ -1,0 +1,416 @@
+{
+  "apiVersion": "dashboard.grafana.app/v2",
+  "kind": "Dashboard",
+  "metadata": {
+    "name": "ad28b6s",
+    "namespace": "default",
+    "uid": "c395d770-9615-4037-a00b-aafa214c049c",
+    "resourceVersion": "1778877005003017",
+    "generation": 25,
+    "creationTimestamp": "2026-05-15T18:48:25Z",
+    "labels": {
+      "grafana.app/deprecatedInternalID": "1718234255532032"
+    },
+    "annotations": {
+      "grafana.app/createdBy": "user:eflvq8gmstkaob",
+      "grafana.app/folder": "",
+      "grafana.app/saved-from-ui": "Grafana v13.0.1+security-01 (9bbe672d)",
+      "grafana.app/updatedBy": "user:eflvq8gmstkaob",
+      "grafana.app/updatedTimestamp": "2026-05-15T20:30:04Z"
+    }
+  },
+  "spec": {
+    "annotations": [
+      {
+        "kind": "AnnotationQuery",
+        "spec": {
+          "query": {
+            "kind": "DataQuery",
+            "group": "grafana",
+            "version": "v0",
+            "datasource": {
+              "name": "-- Grafana --"
+            },
+            "spec": {}
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "builtIn": true
+        }
+      }
+    ],
+    "cursorSync": "Off",
+    "description": "Este es un gráfico que informa sobre la salud de las gallinas de acuerdo con el reporte en su respectivo sensor.",
+    "editable": true,
+    "elements": {
+      "panel-2": {
+        "kind": "Panel",
+        "spec": {
+          "id": 2,
+          "title": "Historial Clínico Dinámico por Ave",
+          "description": "Línea de tiempo interactiva que renderiza cronológicamente las transiciones en el estado biológico de una gallina específica, seleccionada mediante el identificador analítico del tablero. Este panel mapea los cambios temporales de salud basándose en los registros consolidados en la PC Central, permitiendo un seguimiento quirúrgico e individualizado del bienestar animal dentro de la granja.",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "mysql",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "eflwdoiqo44jke"
+                      },
+                      "spec": {
+                        "dataset": "sistema_avicola",
+                        "editorMode": "code",
+                        "format": "table",
+                        "rawQuery": true,
+                        "rawSql": "SELECT\r\n  fecha_hora / 1000 AS time,\r\n  estado_salud AS \"Estado de Salud\"\r\nFROM historial_salud\r\nWHERE id_gallina = '$gallina'\r\nORDER BY fecha_hora ASC;",
+                        "sql": {
+                          "columns": [
+                            {
+                              "parameters": [],
+                              "type": "function"
+                            }
+                          ],
+                          "groupBy": [
+                            {
+                              "property": {
+                                "type": "string"
+                              },
+                              "type": "groupBy"
+                            }
+                          ],
+                          "limit": 50
+                        }
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "state-timeline",
+            "version": "13.0.1+security-01",
+            "spec": {
+              "options": {
+                "alignValue": "center",
+                "annotations": {
+                  "clustering": -1,
+                  "multiLane": false
+                },
+                "legend": {
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": false
+                },
+                "mergeValues": true,
+                "rowHeight": 0.9,
+                "showValue": "always",
+                "tooltip": {
+                  "hideZeros": false,
+                  "mode": "single",
+                  "sort": "none"
+                }
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "mappings": [
+                    {
+                      "type": "value",
+                      "options": {
+                        "En observacion": {
+                          "color": "orange",
+                          "index": 0
+                        },
+                        "En tratamiento": {
+                          "color": "yellow",
+                          "index": 1
+                        },
+                        "Grave": {
+                          "color": "red",
+                          "index": 3
+                        },
+                        "Saludable": {
+                          "color": "green",
+                          "index": 2
+                        }
+                      }
+                    }
+                  ],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "green"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "thresholds"
+                  },
+                  "custom": {
+                    "axisPlacement": "auto",
+                    "fillOpacity": 50,
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "insertNulls": 86400000,
+                    "lineWidth": 0,
+                    "spanNulls": false
+                  }
+                },
+                "overrides": []
+              }
+            }
+          }
+        }
+      },
+      "panel-3": {
+        "kind": "Panel",
+        "spec": {
+          "id": 3,
+          "title": "Distribución Actual del Estado de Salud del Lote",
+          "description": "Gráfico analítico que representa la proporción porcentual y volumétrica de las aves según su estado biológico actual (Saludable, Letárgica, Herida o Problema con Alimento). Permite al personal veterinario diagnosticar rápidamente anomalías sanitarias globales en la granja mediante datos consolidados en la PC Central.",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "mysql",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "eflwdoiqo44jke"
+                      },
+                      "spec": {
+                        "dataset": "sistema_avicola",
+                        "editorMode": "code",
+                        "format": "table",
+                        "rawQuery": true,
+                        "rawSql": "SELECT\r\n  SUM(CASE WHEN estado_salud = 'Saludable' THEN 1 ELSE 0 END) AS \"Saludable\",\r\n  SUM(CASE WHEN estado_salud = 'En observacion' THEN 1 ELSE 0 END) AS \"En Observación\",\r\n  SUM(CASE WHEN estado_salud = 'En tratamiento' THEN 1 ELSE 0 END) AS \"En Tratamiento\",\r\n  SUM(CASE WHEN estado_salud = 'Grave' THEN 1 ELSE 0 END) AS \"Grave\"\r\nFROM (\r\n  SELECT \r\n    id_gallina,\r\n    estado_salud,\r\n    ROW_NUMBER() OVER (PARTITION BY id_gallina ORDER BY fecha_hora DESC) AS fila\r\n  FROM historial_salud\r\n) AS ultimos_registros\r\nWHERE fila = 1;",
+                        "sql": {
+                          "columns": [
+                            {
+                              "parameters": [],
+                              "type": "function"
+                            }
+                          ],
+                          "groupBy": [
+                            {
+                              "property": {
+                                "type": "string"
+                              },
+                              "type": "groupBy"
+                            }
+                          ],
+                          "limit": 50
+                        }
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "piechart",
+            "version": "13.0.1+security-01",
+            "spec": {
+              "options": {
+                "displayLabels": [
+                  "name",
+                  "value"
+                ],
+                "legend": {
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": true,
+                  "values": []
+                },
+                "pieType": "donut",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "/.*/",
+                  "values": false
+                },
+                "sort": "desc",
+                "tooltip": {
+                  "hideZeros": false,
+                  "mode": "single",
+                  "sort": "none"
+                }
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    }
+                  }
+                },
+                "overrides": []
+              }
+            }
+          },
+          "transparent": true
+        }
+      }
+    },
+    "layout": {
+      "kind": "GridLayout",
+      "spec": {
+        "items": [
+          {
+            "kind": "GridLayoutItem",
+            "spec": {
+              "x": 0,
+              "y": 0,
+              "width": 24,
+              "height": 14,
+              "element": {
+                "kind": "ElementReference",
+                "name": "panel-3"
+              }
+            }
+          },
+          {
+            "kind": "GridLayoutItem",
+            "spec": {
+              "x": 0,
+              "y": 14,
+              "width": 24,
+              "height": 8,
+              "element": {
+                "kind": "ElementReference",
+                "name": "panel-2"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "links": [],
+    "liveNow": false,
+    "preload": false,
+    "tags": [],
+    "timeSettings": {
+      "timezone": "browser",
+      "from": "2024-05-05T01:24:25.559Z",
+      "to": "2024-05-07T08:07:04.123Z",
+      "autoRefresh": "5s",
+      "autoRefreshIntervals": [
+        "5s",
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ],
+      "hideTimepicker": false,
+      "fiscalYearStartMonth": 0
+    },
+    "title": "Salud de las gallinas",
+    "variables": [
+      {
+        "kind": "QueryVariable",
+        "spec": {
+          "name": "gallina",
+          "current": {
+            "text": "D1B2C3D4",
+            "value": "D1B2C3D4"
+          },
+          "label": "Seleccionar Gallina",
+          "hide": "dontHide",
+          "refresh": "onDashboardLoad",
+          "skipUrlSync": false,
+          "query": {
+            "kind": "DataQuery",
+            "group": "mysql",
+            "version": "v0",
+            "datasource": {
+              "name": "eflwdoiqo44jke"
+            },
+            "spec": {
+              "dataset": "sistema_avicola",
+              "editorMode": "code",
+              "format": "table",
+              "query": "SELECT DISTINCT id_gallina FROM historial_salud;",
+              "rawQuery": true,
+              "rawSql": "SELECT DISTINCT id_gallina FROM historial_salud;",
+              "refId": "SQLVariableQueryEditor-VariableQuery",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          },
+          "regex": "",
+          "regexApplyTo": "value",
+          "sort": "disabled",
+          "definition": "SELECT DISTINCT id_gallina FROM historial_salud;",
+          "options": [],
+          "multi": false,
+          "includeAll": false,
+          "allowCustomValue": true
+        }
+      }
+    ],
+    "preferences": {
+      "layout": {
+        "kind": "GridLayout",
+        "spec": {
+          "items": []
+        }
+      }
+    }
+  }
+}

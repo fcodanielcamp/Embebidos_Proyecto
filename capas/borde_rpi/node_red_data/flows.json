@@ -716,7 +716,7 @@
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "payload": "{\"uid\":\"B1B2C3D4\",\"estado\":\"Saludable\",\"timestamp\":1714951000000}",
+        "payload": "{\"uid\":\"B1B2C3D4\",\"estado\":\"En tratamiento\",\"timestamp\":1714951000000}",
         "payloadType": "json",
         "x": 910,
         "y": 460,
@@ -743,6 +743,56 @@
         "wires": [
             [
                 "7da16094a90578c7"
+            ]
+        ]
+    },
+    {
+        "id": "3fd177b35f70e577",
+        "type": "inject",
+        "z": "738ecc0fd85310c9",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"uid\":\"C1B2C3D4\",\"estado\":\"En observacion\",\"timestamp\":1714951000000}",
+        "payloadType": "json",
+        "x": 890,
+        "y": 580,
+        "wires": [
+            [
+                "1c5b596d652a0796"
+            ]
+        ]
+    },
+    {
+        "id": "07dbb7e95c2e9f78",
+        "type": "inject",
+        "z": "738ecc0fd85310c9",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"uid\":\"D1B2C3D4\",\"estado\":\"Grave\",\"timestamp\":1714951000000}",
+        "payloadType": "json",
+        "x": 590,
+        "y": 500,
+        "wires": [
+            [
+                "1c5b596d652a0796"
             ]
         ]
     }
