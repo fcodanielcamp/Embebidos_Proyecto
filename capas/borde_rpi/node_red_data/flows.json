@@ -141,7 +141,7 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "{   \"trigger\": \"active health menu\",   \"uid\": payload.uid }",
+                "to": "{\t   \"trigger\": \"active health menu\",\t   \"uid\": payload.uid,\t   \"timestamp\": payload.timestamp\t}",
                 "tot": "jsonata"
             }
         ],
@@ -647,7 +647,7 @@
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "payload": "{\t  \"id_sensor\": 1,\t  \"uid\": \"778899AA\",\t  \"timestamp\": $millis()\t}",
+        "payload": "{\t  \"id_sensor\": 3,\t  \"uid\": \"778899AA\",\t  \"timestamp\": $millis()\t}",
         "payloadType": "jsonata",
         "x": 320,
         "y": 100,
